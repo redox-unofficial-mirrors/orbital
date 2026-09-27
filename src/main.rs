@@ -43,7 +43,7 @@ fn orbital() -> Result<(), String> {
         login_cmd => ("orbital".to_owned(), login_cmd),
     };
 
-    let config = Rc::new(Config::from_path("/ui/orbital.toml"));
+    let config = Rc::new(Config::from_path("/usr/share/ui/orbital.toml"));
 
     let orbital = Orbital::open_display(config)
         .map_err(|e| format!("could not open display, caused by: {}", e))?;
