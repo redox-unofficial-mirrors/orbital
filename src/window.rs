@@ -56,6 +56,7 @@ pub struct Window {
 const TITLE_HEIGHT: u32 = 28;
 const TITLE_TEXT_HEIGHT: u32 = 16;
 const BORDER_WIDTH: u32 = 8;
+const CORNER_RESIZE_SIZE: u32 = 20;
 
 impl Window {
     // TODO Consider creating Rect for the title area, max and close areas and removing a lot
@@ -152,6 +153,25 @@ impl Window {
         } else {
             Rect::default()
         }
+    }
+
+    pub fn bottom_corner_rect(&self, edge: RectEdge) -> Rect {
+        if !self.resizable {
+            return Rect::default();
+        }
+
+        let size = CORNER_RESIZE_SIZE * self.scale;
+        let rect = self.rect();
+
+        let x = match edge {
+            RectEdge::Left => rect.left().saturating_sub_unsigned(size / 2),
+            RectEdge::Right => rect.right().saturating_sub_unsigned(size / 2),
+            _ => return Rect::default(),
+        };
+
+        let y = rect.bottom().saturating_sub_unsigned(size / 2);
+
+        Rect::new(x, y, size, size)
     }
 
     pub fn max_contains(&self, x: i32, y: i32) -> bool {

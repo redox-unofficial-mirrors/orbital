@@ -1200,16 +1200,30 @@ impl OrbitalScheme {
                         } else if window.title_rect().contains(event.x, event.y) {
                             break;
                         } else {
+                            let bottom_left = window
+                                .bottom_corner_rect(RectEdge::Left)
+                                .contains(self.cursor_x, self.cursor_y);
+
+                            let bottom_right = window
+                                .bottom_corner_rect(RectEdge::Right)
+                                .contains(self.cursor_x, self.cursor_y);
+
+                            let left = window
+                                .border_rect(RectEdge::Left)
+                                .contains(self.cursor_x, self.cursor_y);
+
+                            let right = window
+                                .border_rect(RectEdge::Right)
+                                .contains(self.cursor_x, self.cursor_y);
+
+                            let bottom = window
+                                .border_rect(RectEdge::Bottom)
+                                .contains(self.cursor_x, self.cursor_y);
+
                             let cursor_mode = match (
-                                window
-                                    .border_rect(RectEdge::Left)
-                                    .contains(self.cursor_x, self.cursor_y),
-                                window
-                                    .border_rect(RectEdge::Right)
-                                    .contains(self.cursor_x, self.cursor_y),
-                                window
-                                    .border_rect(RectEdge::Bottom)
-                                    .contains(self.cursor_x, self.cursor_y),
+                                bottom_left || left,
+                                bottom_right || right,
+                                bottom_left || bottom_right || bottom,
                             ) {
                                 (true, false, false) => Some(CursorKind::LeftSide),
                                 (false, true, false) => Some(CursorKind::RightSide),
@@ -1544,16 +1558,30 @@ impl OrbitalScheme {
                 }
                 return Some(id);
             } else {
+                let bottom_left = window
+                    .bottom_corner_rect(RectEdge::Left)
+                    .contains(self.cursor_x, self.cursor_y);
+
+                let bottom_right = window
+                    .bottom_corner_rect(RectEdge::Right)
+                    .contains(self.cursor_x, self.cursor_y);
+
+                let left = window
+                    .border_rect(RectEdge::Left)
+                    .contains(self.cursor_x, self.cursor_y);
+
+                let right = window
+                    .border_rect(RectEdge::Right)
+                    .contains(self.cursor_x, self.cursor_y);
+
+                let bottom = window
+                    .border_rect(RectEdge::Bottom)
+                    .contains(self.cursor_x, self.cursor_y);
+
                 let dragging = match (
-                    window
-                        .border_rect(RectEdge::Left)
-                        .contains(self.cursor_x, self.cursor_y),
-                    window
-                        .border_rect(RectEdge::Right)
-                        .contains(self.cursor_x, self.cursor_y),
-                    window
-                        .border_rect(RectEdge::Bottom)
-                        .contains(self.cursor_x, self.cursor_y),
+                    bottom_left || left,
+                    bottom_right || right,
+                    bottom_left || bottom_right || bottom,
                 ) {
                     (true, false, false) => Some(DragMode::LeftBorder(
                         id,
